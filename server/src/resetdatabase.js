@@ -1,6 +1,7 @@
 var ObjectID = require('mongodb').ObjectID;
 
 var databaseName = "facebook";
+var ResetDatabase = require('./resetdatabase');
 // Put the initial mock objects here.
 var initialData = {
   // The "user" collection. Contains all of the users in our Facebook system.
@@ -143,9 +144,13 @@ function resetDatabase(db, cb) {
       // Use myself as a callback.
       resetCollection(db, collection, processNextCollection);
     } else {
-      cb();
+      addIndexes(db, cb);
     }
   }
+
+  function addIndexes(db, cb) {
+  db.collection('feedItems').createIndex({ "contents.contents": "text" }, null, cb);
+}
 
   // Start processing the first collection!
   processNextCollection();
