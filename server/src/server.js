@@ -576,7 +576,7 @@ app.post('/feeditem/:feeditemid/comments', validate({ body: CommentSchema }), fu
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   var comment = req.body;
   var author = req.body.author;
-  var feedItemId = req.params.feeditemid;
+  var feedItemId = new ObjectID(req.params.feeditemid);
   if (fromUser === author) {
     var feedItem = readDocument('feedItems', feedItemId);
     // Initialize likeCounter to empty.
@@ -599,8 +599,8 @@ app.post('/feeditem/:feeditemid/comments', validate({ body: CommentSchema }), fu
 
 app.put('/feeditem/:feeditemid/comments/:commentindex/likelist/:userid', function(req, res) {
   var fromUser = getUserIdFromToken(req.get('Authorization'));
-  var userId = parseInt(req.params.userid, 10);
-  var feedItemId = parseInt(req.params.feeditemid, 10);
+  var userId = new ObjectID(req.params.userid);
+  var feedItemId = new ObjectID(req.params.feeditemid);
   var commentIdx = parseInt(req.params.commentindex, 10);
   // Only a user can mess with their own like.
   if (fromUser === userId) {
@@ -622,8 +622,8 @@ app.put('/feeditem/:feeditemid/comments/:commentindex/likelist/:userid', functio
 
 app.delete('/feeditem/:feeditemid/comments/:commentindex/likelist/:userid', function(req, res) {
   var fromUser = getUserIdFromToken(req.get('Authorization'));
-  var userId = parseInt(req.params.userid, 10);
-  var feedItemId = parseInt(req.params.feeditemid, 10);
+  var userId = new ObjectID(req.params.userid);
+  var feedItemId = new ObjectID(req.params.feeditemid);
   var commentIdx = parseInt(req.params.commentindex, 10);
   // Only a user can mess with their own like.
   if (fromUser === userId) {
